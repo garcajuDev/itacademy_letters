@@ -26,6 +26,7 @@ public class Main {
 		ArrayList nameList = new ArrayList<>();
 		String nameStr = "";
 		char[] vocales = {'a','e','i','o','u'};
+		boolean isVocal = false;
 		
 		for(char letra : nameTable) {
 			nameList.add(letra);
@@ -33,8 +34,6 @@ public class Main {
 		}
 		
 		String nameLow = nameStr.toLowerCase();
-		
-		boolean isVocal = false;
 		
 		Pattern p= Pattern.compile("[0-9]");
 		Matcher m = p.matcher(nameLow);
@@ -55,9 +54,9 @@ public class Main {
 				isVocal = false;
 			} 
 		}
-		
 		blockThree(nameList);
 	}
+	
 	public static void blockThree(ArrayList nameList) {
 		Map<Character, Integer> letterMap = new HashMap<Character, Integer>();
 		int value = 1;
