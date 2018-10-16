@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class Main {
 
@@ -21,25 +23,39 @@ public class Main {
 		return nameTable;
 	}
 	public static void blockTwo(char[] nameTable) {
-		ArrayList nameList = new ArrayList();
-		for(char letter : nameTable) {
-			nameList.add(letter);
-			int character = letter;
-			switch (character) {
-			case 'a': case'e': case 'i': case 'o': case 'u': case 'A': case 'E': case 'I': case 'O': case 'U':
-				System.out.println("vocal");
-				break;
-			
-			case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 0:
-				System.out.println("A name don't have numbers!");
-				break;
-					
-			default:
-				System.out.println("consonant");
-				break;
-			}
+		ArrayList nameList = new ArrayList<>();
+		String nameStr = "";
+		char[] vocales = {'a','e','i','o','u'};
+		
+		for(char letra : nameTable) {
+			nameList.add(letra);
+			nameStr += letra;
 		}
-		System.out.println("\n");
+		
+		String nameLow = nameStr.toLowerCase();
+		
+		boolean isVocal = false;
+		
+		Pattern p= Pattern.compile("[0-9]");
+		Matcher m = p.matcher(nameLow);
+		
+		if(m.find()) {
+			System.out.println("A name don't have numbers");
+		}else {
+			for (int i = 0; i < nameLow.length(); i++) {
+				for (char c : vocales) {
+					if (nameLow.charAt(i) == c) {
+						isVocal = true;
+						break;
+					}
+				}
+				if(isVocal == true) System.out.println("Vocal");
+				else System.out.println("Consonant");
+				
+				isVocal = false;
+			} 
+		}
+		
 		blockThree(nameList);
 	}
 	public static void blockThree(ArrayList nameList) {
