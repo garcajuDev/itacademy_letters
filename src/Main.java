@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -11,7 +12,10 @@ public class Main {
 		char[] name = {'J','U','A','N'};
 		blockOne(name);
 		blockTwo(name);
+		blockThree(name);
+		blockFour(name);
 	}
+	
 	public static char[] blockOne(char[] nameTable) {
 		
 		int i = 0;
@@ -22,59 +26,80 @@ public class Main {
 		System.out.println("\n");
 		return nameTable;
 	}
+	
 	public static void blockTwo(char[] nameTable) {
-		ArrayList nameList = new ArrayList<>();
-		String nameStr = "";
-		char[] vocales = {'a','e','i','o','u'};
-		boolean isVocal = false;
-		
-		for(char letra : nameTable) {
-			nameList.add(letra);
-			nameStr += letra;
-		}
-		
-		String nameLow = nameStr.toLowerCase();
-		
-		Pattern p= Pattern.compile("[0-9]");
-		Matcher m = p.matcher(nameLow);
-		
-		if(m.find()) {
-			System.out.println("A name don't have numbers");
-		}else {
-			for (int i = 0; i < nameLow.length(); i++) {
-				for (char c : vocales) {
-					if (nameLow.charAt(i) == c) {
-						isVocal = true;
-						break;
-					}
-				}
-				if(isVocal == true) System.out.println("Vocal");
-				else System.out.println("Consonant");
-				
-				isVocal = false;
-			} 
-		}
-		blockThree(nameList);
+		String name = getName(nameTable);
+		nameTester(name);
 	}
 	
-	public static void blockThree(ArrayList nameList) {
+	public static void blockThree(char[] name) {
+		Map<Character, Integer> nameMap = toMap(name);
+		printMap(nameMap);
+	}
+	public static void blockFour(char[] name) {
+		List<Character> fullName = getFullName(getNameList(name),getSurnameList());
+		printFullName(fullName);
+	}
+	
+	//Block 2 Functions
+	public static String getName(char[] nameChar) {
+		String name = "";
+		
+		for(char letra : nameChar) name += letra;
+		
+		return name.toLowerCase();
+	}
+	
+	public static void nameTester (String name) { 
+		for (int i = 0; i < name.length(); i++ ) {
+			if(Character.isDigit(name.charAt(i))) System.out.println("It's a digit");
+			else {
+				if(isVocal(name.charAt(i)) == true) System.out.println("Vocal");
+				else System.out.println("Consonant");
+			}
+		}
+	}
+	
+	public static boolean isVocal(char letter) {
+		char[] vocals = {'a','e','i','o','u'};
+		boolean letterResult = true;
+		
+		for (int i = 0; i < vocals.length; i++)
+			if(vocals[i] == letter) return letterResult;
+		
+		return !letterResult;
+	}
+	
+	//Block 3 Functions
+	public static Map<Character, Integer> toMap(char[] nameList) {
 		Map<Character, Integer> letterMap = new HashMap<Character, Integer>();
 		int value = 1;
-		for(Object letter : nameList) {
-			char key = (char) letter;
-			if(letterMap.containsKey(key)) value ++;
-			letterMap.put((char)letter, value);
+		for(char letter : nameList) {
+			if(letterMap.containsKey(letter)) {
+				value = letterMap.get(letter);
+				value++;
+			}
+			letterMap.put(letter, value);
 		}
-		Iterator it = letterMap.keySet().iterator();
-		while(it.hasNext()){
-		  Object key = it.next();
-		  System.out.println("Letter: " + key + " -> Repetitions: " + letterMap.get(key));
-		}
-		System.out.println("\n");
-		blockFour(nameList);
+		return letterMap;
 	}
-	public static void blockFour(ArrayList name) {
-		ArrayList<Character> surname = new ArrayList<Character>();
+	
+	public static void printMap(Map<Character,Integer> letterMap) {
+		letterMap.forEach((k,v) -> System.out.println("Letter: " + k + ": Repetitions: " + v));
+	}
+	
+	//Block 4 Functions
+	public static List<Character> getNameList(char[] name) {
+		List nameList = new ArrayList<Character>();
+		
+		for(char letter: name) nameList.add(letter);
+		
+		return nameList;
+		
+	}
+	
+	public static List<Character> getSurnameList() {
+		List surname = new ArrayList<Character>();
 		surname.add('G');
 		surname.add('A');
 		surname.add('R');
@@ -82,6 +107,10 @@ public class Main {
 		surname.add('I');
 		surname.add('A');
 		
+		return surname;
+	}
+	
+	public static List<Character> getFullName(List<Character> name, List<Character> surname) {
 		int length = (name.size()+surname.size())+1;
 		ArrayList<Character> fullName = new ArrayList<Character>(length);
 		
@@ -89,8 +118,10 @@ public class Main {
 		fullName.add(' ');
 		fullName.addAll(surname);
 		
-		for (int i = 0 ; i < length ; i++) {
-			System.out.print(fullName.get(i));
-		}
+		return fullName;
+	}
+	
+	public static void printFullName(List<Character> fullName) {
+		for(char letter: fullName) System.out.print(""+letter);
 	}
 }
