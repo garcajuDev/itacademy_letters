@@ -1,10 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 public class Main {
 
@@ -95,7 +92,6 @@ public class Main {
 		for(char letter: name) nameList.add(letter);
 		
 		return nameList;
-		
 	}
 	
 	public static List<Character> getSurnameList() {
